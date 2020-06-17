@@ -93,7 +93,32 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+$(document).ready(function () {
+  var source = $('#card-template').html();
+  var template = Handlebars.compile(source);
+  $.ajax({
+    'url': '../versione-ajax/partials/records_list.php',
+    'method': 'GET',
+    'success': function success(data) {
+      console.log(data);
 
+      for (var i = 0; i < data.length; i++) {
+        var ctx = {
+          'img-src': data[i].poster,
+          'title': data[i].title,
+          'author': data[i].author,
+          'genre': data[i].genre,
+          'year': data[i].year
+        };
+        var html = template(ctx);
+        $('main').append(html);
+      }
+    },
+    'error': function error() {
+      console.log('oops...');
+    }
+  });
+});
 
 /***/ }),
 
